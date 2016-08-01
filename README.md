@@ -1,4 +1,4 @@
-# GeoDocker Accumulo
+# GeoDocker Accumulo GeoMesa
 
 [![Build Status](https://api.travis-ci.org/geodocker/geodocker-accumulo.svg)](http://travis-ci.org/geodocker/geodocker-accumulo)
 [![Docker Repository on Quay](https://quay.io/repository/geodocker/base/status "Docker Repository on Quay")](https://quay.io/repository/geodocker/accumulo)
