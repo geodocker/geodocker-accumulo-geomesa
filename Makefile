@@ -1,6 +1,6 @@
 BASE := $(subst -, ,$(notdir ${CURDIR}))
 ORG  := $(word 1, ${BASE})
-REPO := $(word 2, ${BASE})
+REPO := $(word 2, ${BASE})-$(word 3, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
 
 build:
