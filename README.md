@@ -25,3 +25,9 @@ This container has three roles that can be supplied as `CMD`:
 
 # Testing
 This container should be tested with `docker-compose` and through `make test`
+
+# Use on Amazon EMR
+For information on the use of this container and its siblings on top of
+EMR, go
+[here](https://github.com/geodocker/geodocker-accumulo/tree/master/emr).
+
