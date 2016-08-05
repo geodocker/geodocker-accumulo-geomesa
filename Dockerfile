@@ -5,6 +5,7 @@ MAINTAINER Pomadchin Grigory, daunnc@gmail.com
 ENV GEOMESA_VERSION 1.2.4
 ENV GEOMESA_DIST /opt/geomesa
 ENV GEOMESA_HOME ${GEOMESA_DIST}/tools
+ENV PATH $PATH:${GEOMESA_DIST}/tools/bin
 
 # GeoMesa Iterators
 RUN set -x \
@@ -19,3 +20,6 @@ RUN set -x \
   && rm -rf ${GEOMESA_DIST}/hadoop \
   && rm -rf ${GEOMESA_DIST}/web-services \
   && rm -rf ${GEOMESA_DIST}/spark
+
+COPY ./fs /
+ENTRYPOINT [ "/sbin/geomesa-entrypoint.sh" ]
