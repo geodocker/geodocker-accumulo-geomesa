@@ -20,3 +20,6 @@ RUN set -x \
   && rm -rf ${GEOMESA_DIST}/hadoop \
   && rm -rf ${GEOMESA_DIST}/web-services \
   && rm -rf ${GEOMESA_DIST}/spark
+
+COPY ./fs /
+ENTRYPOINT [ "/sbin/geomesa-entrypoint.sh" ]
