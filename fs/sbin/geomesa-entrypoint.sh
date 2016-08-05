@@ -5,8 +5,6 @@ source /sbin/accumulo-lib.sh
 
 # The first argument determines this container's role in the accumulo cluster
 ROLE=${1:-}
-USER=${USER:-root}
-THIS_SCRIPT="$(realpath "${BASH_SOURCE[0]}")"
 ACCUMULO_USER=${ACCUMULO_USER:-root}
 
 if [ $ROLE = "register" ]; then
