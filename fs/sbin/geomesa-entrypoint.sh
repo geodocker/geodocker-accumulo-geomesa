@@ -8,8 +8,7 @@ ROLE=${1:-}
 ACCUMULO_USER=${ACCUMULO_USER:-root}
 
 if [ $ROLE = "register" ]; then
-  wait_until_hdfs_is_available
-  with_backoff accumulo_is_available
+  wait_until_accumulo_is_available
   accumulo shell -u ${ACCUMULO_USER} -p ${ACCUMULO_PASSWORD} -e \
     "createnamespace geomesa"
   accumulo shell -u ${ACCUMULO_USER} -p ${ACCUMULO_PASSWORD} -e \
