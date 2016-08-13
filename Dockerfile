@@ -1,25 +1,22 @@
 FROM quay.io/geodocker/accumulo:latest
 
-MAINTAINER Pomadchin Grigory, daunnc@gmail.com
+MAINTAINER Pomadchin Grigory <daunnc@gmail.com>
 
-ENV GEOMESA_VERSION 1.2.4
+ARG GEOMESA_VERSION
+ENV GEOMESA_VERSION ${GEOMESA_VERSION}
 ENV GEOMESA_DIST /opt/geomesa
+ENV GEOMESA_RUNTIME ${GEOMESA_DIST}/accumulo
 ENV GEOMESA_HOME ${GEOMESA_DIST}/tools
 ENV PATH="${GEOMESA_HOME}/bin:${PATH}"
 
+ADD geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz /
+ADD geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar ${GEOMESA_RUNTIME}/
+
 # GeoMesa Iterators
 RUN set -x \
-  && mkdir -p ${GEOMESA_DIST} \
-  && curl -sS -L http://repo.locationtech.org/content/repositories/geomesa-releases/org/locationtech/geomesa/geomesa-dist/${GEOMESA_VERSION}/geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz \
-  | tar -zx -C ${GEOMESA_DIST} --strip-components=2  geomesa-${GEOMESA_VERSION}/dist \
-  && tar -xzf ${GEOMESA_DIST}/tools/geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz --strip-components=1 -C ${GEOMESA_DIST}/tools \
-  && ${GEOMESA_DIST}/tools/bin/install-jai.sh \
-  && ${GEOMESA_DIST}/tools/bin/install-jline.sh \
-  && rm -f ${GEOMESA_DIST}/tools/geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz \
-  && rm -rf ${GEOMESA_DIST}/gs-plugins \
-  && rm -rf ${GEOMESA_DIST}/hadoop \
-  && rm -rf ${GEOMESA_DIST}/web-services \
-  && rm -rf ${GEOMESA_DIST}/spark
+  && mv /geomesa-tools-${GEOMESA_VERSION} ${GEOMESA_HOME} \
+  && (echo yes | ${GEOMESA_DIST}/tools/bin/install-jai.sh) \
+  && (echo yes | ${GEOMESA_DIST}/tools/bin/install-jline.sh)
 
 COPY ./fs /
 ENTRYPOINT [ "/sbin/geomesa-entrypoint.sh" ]
