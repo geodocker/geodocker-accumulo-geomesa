@@ -2,7 +2,7 @@ BASE := $(subst -, ,$(notdir ${CURDIR}))
 ORG  := $(word 1, ${BASE})
 REPO := $(word 2, ${BASE})-$(word 3, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
-GEOMESA_VERSION := 1.2.4
+GEOMESA_VERSION := 1.2.5
 
 build: geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz
 	docker build \
@@ -14,7 +14,7 @@ geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz:
 
 geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz: geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz
 	tar zxvf $<
-	cp geomesa-${GEOMESA_VERSION}/dist/tools/geomesa-tools-1.2.4-bin.tar.gz .
+	cp geomesa-${GEOMESA_VERSION}/dist/tools/geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz .
 
 geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar: geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz
 	cp geomesa-${GEOMESA_VERSION}/dist/accumulo/geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar .
