@@ -2,22 +2,25 @@ BASE := $(subst -, ,$(notdir ${CURDIR}))
 ORG  := $(word 1, ${BASE})
 REPO := $(word 2, ${BASE})-$(word 3, ${BASE})
 IMG  := quay.io/${ORG}/${REPO}
-GEOMESA_VERSION := 1.2.4
+GEOMESA_VERSION := 1.2.5
+DIST_TARBALL := tarballs/geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz
+TOOL_TARBALL := geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz
+RUNTIME := geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar
 
-build: geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz
+build: ${RUNTIME} ${TOOL_TARBALL}
 	docker build \
 		--build-arg GEOMESA_VERSION=${GEOMESA_VERSION} \
 		-t ${IMG}:latest .
 
-geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz:
-	curl -L -C - -O "https://repo.locationtech.org/content/repositories/geomesa-releases/org/locationtech/geomesa/geomesa-dist/${GEOMESA_VERSION}/geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz"
+${DIST_TARBALL}:
+	(cd tarballs ; curl -L -C - -O "https://repo.locationtech.org/content/repositories/geomesa-releases/org/locationtech/geomesa/geomesa-dist/${GEOMESA_VERSION}/geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz")
 
-geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz: geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz
+${TOOL_TARBALL}: ${DIST_TARBALL}
 	tar zxvf $<
-	cp geomesa-${GEOMESA_VERSION}/dist/tools/geomesa-tools-1.2.4-bin.tar.gz .
+	cp geomesa-${GEOMESA_VERSION}/dist/tools/${TOOL_TARBALL} .
 
-geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar: geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz
-	cp geomesa-${GEOMESA_VERSION}/dist/accumulo/geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar .
+${RUNTIME}: ${TOOL_TARBALL}
+	cp geomesa-${GEOMESA_VERSION}/dist/accumulo/${RUNTIME} .
 
 publish: build
 	docker push ${IMG}:latest
@@ -35,8 +38,7 @@ clean:
 	rm -rf geomesa-${GEOMESA_VERSION}/
 
 cleaner: clean
-	rm -f geomesa-tools-${GEOMESA_VERSION}-bin.tar.gz
-	rm -f geomesa-accumulo-distributed-runtime-${GEOMESA_VERSION}.jar
+	rm -f ${RUNTIME} ${TOOL_TARBALL}
 
 cleanest: cleaner
-	rm -f geomesa-dist-${GEOMESA_VERSION}-bin.tar.gz
+	rm -f ${DIST_TARBALL}

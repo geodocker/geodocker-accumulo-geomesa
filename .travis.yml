@@ -17,6 +17,9 @@ before_install:
 - sudo mv -f docker-compose /usr/local/bin
 install:
 - make -e build
+cache:
+  directories:
+  - ./tarballs
 script:
 - make -e test
 before_deploy:
