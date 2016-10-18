@@ -5,7 +5,7 @@ services:
         ports:
           - 9090:9090
     hdfs-name:
-        image: quay.io/geodocker/hdfs:latest
+        image: quay.io/geodocker/hdfs:0.1
         command: name
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
@@ -14,7 +14,7 @@ services:
         # volumes:
         #   - '/data/gt/hdfs:/data/hdfs'
     hdfs-data:
-        image: quay.io/geodocker/hdfs:latest
+        image: quay.io/geodocker/hdfs:0.1
         command: data
         environment:
           HADOOP_MASTER_ADDRESS: hdfs-name
