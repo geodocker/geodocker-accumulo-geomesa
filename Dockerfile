@@ -1,4 +1,4 @@
-FROM quay.io/geodocker/accumulo:0.1
+FROM quay.io/geodocker/accumulo:0.2
 
 MAINTAINER Pomadchin Grigory <daunnc@gmail.com>
 
