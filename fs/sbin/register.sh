@@ -5,7 +5,7 @@ source /sbin/accumulo-lib.sh
 
 ACCUMULO_USER=${ACCUMULO_USER:-root}
 
-wait_until_accumulo_is_available ${INSTANCE_NAME}
+wait_until_accumulo_is_available ${INSTANCE_NAME} ${ZOOKEEPERS}
 accumulo shell -u ${ACCUMULO_USER} -p ${ACCUMULO_PASSWORD} -e \
   "createnamespace geomesa"
 accumulo shell -u ${ACCUMULO_USER} -p ${ACCUMULO_PASSWORD} -e \
